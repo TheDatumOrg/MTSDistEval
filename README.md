@@ -121,6 +121,14 @@ python generate_plots.py
 
 > **Note**: This is a large-scale evaluation study. The classification experiments alone include over 18,000 runs, with individual runs taking anywhere from a few seconds to several hours. While the original evaluation was performed on a high-performance cluster with 100+ nodes running in parallel, the provided script runs experiments sequentially to accommodate users without access to such hardware resources.
 
+**Hardware Specifications of the HPC Cluster used to run the experiments:**
+- Node Count: 525
+- CPU: 2x AMD Rome 7H12 (64 Cores/Socket, 2.6GHz)
+- RAM: 256 GB DRAM
+
+By requesting 16 cores per job, this allowed us to run a maximum of 4200 jobs (i.e., one measure-dataset-normalization combination) concurrently.
+
+
 ### 3. Running an individual classification experiment.
 
 You can run either inference or LOOCV validation on a specific dataset with a specific metric and normalization method through running the [src/classification.py](src/classification.py) script, with the following arguments:
