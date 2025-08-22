@@ -58,6 +58,7 @@ def main(params:Parameters):
     param_path = params.param_path
     run_type = params.run_type
     n_jobs = params.n_jobs
+    testrun = params.testrun
     parameters_given = params.metric_params not in [None, {}, '']
 
     OUTDIR = None
@@ -84,15 +85,21 @@ def main(params:Parameters):
     #Call Datasets
     print("[{}] Loading data".format(module))
     
-    X_train = np.load(os.path.join(data_path, problem, f'{problem}_train_X.npy'))
-    y_train = np.load(os.path.join(data_path, problem, f'{problem}_train_Y.npy'))
-
-    if run_type == "inference":
-        X_test  = np.load(os.path.join(data_path, problem, f'{problem}_test_X.npy'))
-        y_test  = np.load(os.path.join(data_path, problem, f'{problem}_test_Y.npy'))
+    if testrun: # Generate dummy data
+        X_train = np.random.randn(10,3,32)
+        y_train = np.random.randint(0, 2, size=(10,))
+        X_test = np.random.randn(10,3,32)
+        y_test = np.random.randint(0, 2, size=(10,))
     else:
-        X_test = X_train
-        y_test = y_train
+        X_train = np.load(os.path.join(data_path, problem, f'{problem}_train_X.npy'))
+        y_train = np.load(os.path.join(data_path, problem, f'{problem}_train_Y.npy'))
+
+        if run_type == "inference":
+            X_test  = np.load(os.path.join(data_path, problem, f'{problem}_test_X.npy'))
+            y_test  = np.load(os.path.join(data_path, problem, f'{problem}_test_Y.npy'))
+        else:
+            X_test = X_train
+            y_test = y_train
 
     # If UTS, then fix
     if len(X_train.shape) == 2:
@@ -141,7 +148,7 @@ def main(params:Parameters):
     start_t = time.time()
 
     onenn.fit(X_train_norm,y_train_norm)
-    pred, distmat = onenn.predict(X_test_norm, self_similarity=run_type == 'inference', distance_matrix=distmat)
+    pred, distmat = onenn.predict(X_test_norm, self_similarity=run_type == 'inference', distance_matrix=distmat, testrun=testrun)
 
     end_t = time.time()
     runtime = end_t - start_t

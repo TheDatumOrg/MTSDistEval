@@ -132,10 +132,14 @@ class OneNNClassifier:
         return distance_matrix
 
 
-    def predict(self, X, self_similarity=True, distance_matrix=None):
+    def predict(self, X, self_similarity=True, distance_matrix=None, **kwargs):
         # X is test set; self._X is train set
         if not distance_matrix:
-            distance_matrix = self.distance_matrix(X, self.metric, self.metric_params)
+            if kwargs.get('testrun', False):
+                distance_matrix = np.abs(np.random.randn(X.shape[0], self._X.shape[0]))
+            else:
+                distance_matrix = self.distance_matrix(X, self.metric, self.metric_params)
+
 
         print("Number of Nan/Inf: ", sum(np.isnan(distance_matrix.reshape(-1))), sum(np.isinf(distance_matrix.reshape(-1))))
         # Fill the diagonal with nans if no self similarity

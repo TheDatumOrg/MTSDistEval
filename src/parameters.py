@@ -17,6 +17,7 @@ class Parameters:
     metric_params: dict = None
     run_type: str = "inference" # inference, loocv
     n_jobs: int = -1
+    testrun: bool = False
 
     # Posterior init
     def __post_init__(self):
@@ -40,6 +41,7 @@ class Parameters:
         parser.add_argument('-s','--save_distances',required=False,default=None)
         parser.add_argument("-c","--metric_params",nargs='*', default=None)
         parser.add_argument("-j","--n_jobs",required=False, default=-1)
+        parser.add_argument("-t", "--testrun", action="store_true", help="Flag for testing, will load fake data and generate random distances", default=False)
 
         arguments = parser.parse_args(args)
 
@@ -53,6 +55,7 @@ class Parameters:
         metric_policy = arguments.metric_policy
         save_distances = arguments.save_distances if arguments.save_distances != 'None' else None
         n_jobs = int(arguments.n_jobs)
+        testrun = arguments.testrun
 
         # Parse metric parameters if they are passed
         metric_params = None
@@ -77,7 +80,7 @@ class Parameters:
                     except ValueError:
                         metric_params[key] = value
 
-        return Parameters(data_path, param_path, metric, problem_idx, problem, norm, itr, save_distances, metric_params, metric_policy, n_jobs)
+        return Parameters(data_path, param_path, metric, problem_idx, problem, norm, itr, save_distances, metric_params, metric_policy, n_jobs, testrun)
 
     def to_dict(self):
         return {
@@ -90,7 +93,8 @@ class Parameters:
             'save_distances': self.save_distances,
             'metric_params': self.metric_params,
             'metric_policy': self.run_type,
-            'n_jobs': self.n_jobs
+            'n_jobs': self.n_jobs,
+            'testrun': self.testrun
         }
 
 

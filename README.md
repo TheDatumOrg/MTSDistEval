@@ -105,7 +105,23 @@ print("DTW-Independent Distance: ", result_dtw_indep)
 print("DTW-Dependent Distance: ", result_dtw_dep)
 ```
 
-### 2. Running classification experiments:
+### 2. Replicating the Results:
+
+To replicate the results from our paper:
+
+1. Run all experiments:
+```shell
+bash scripts/run_classification_exp.sh
+```
+
+2. Generate all tables and plots from the paper:
+```shell
+python generate_plots.py
+```
+
+> **Note**: This is a large-scale evaluation study. The classification experiments alone include over 18,000 runs, with individual runs taking anywhere from a few seconds to several hours. While the original evaluation was performed on a high-performance cluster with 100+ nodes running in parallel, the provided script runs experiments sequentially to accommodate users without access to such hardware resources.
+
+### 3. Running an individual classification experiment.
 
 You can run either inference or LOOCV validation on a specific dataset with a specific metric and normalization method through running the [src/classification.py](src/classification.py) script, with the following arguments:
 
@@ -128,7 +144,7 @@ Example 2: Run inference with DTW-D distance on the BasicMotions dataset with z-
 python -m src.classification -mp inference -d $DATASET_DIR$ -p BasicMotions -m dtw-d -n zscore-i -c sakoe_chiba_radius=0.1
 ```
 
-### 3. Running clustering experiments
+### 4. Running an individual clustering experiment.
 
 We provide an example of performing clustering experiments by running [src/Clustering/Clustering_pipeline.py](src/Clustering/Clustering_pipeline.py) script, with the following arguments:
 
@@ -144,7 +160,7 @@ Example: Run clustering with PAM + DTW-D on the BasicMotions dataset with Nonorm
 python ./src/Clustering/Clustering_pipeline.py -p $DATASET_DIR$ -f BasicMotions -a PAM_DTW_D -i 1 -s ./Clustering_results
 ```
 
-### 4. Running anomaly detection experiments
+### 5. Running an individual anomaly detection experiment.
 
 We provide an example of performing anomaly detection experiments by running [src/Anomaly_Detection/AD_pipeline.py](src/Anomaly_Detection/AD_pipeline.py) script, with the following arguments:
 
