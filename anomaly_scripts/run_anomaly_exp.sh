@@ -7,12 +7,10 @@ if [ -z "$DATASET_PATH" ]; then
   read -p "Enter dataset path: " DATASET_PATH
 fi
 
-# If running inside a conda environment, just use it and install requirements
+# If running inside a conda environment, just use it (assume requirements installed)
 if [ -n "$CONDA_PREFIX" ]; then
   echo "Detected conda environment: $CONDA_DEFAULT_ENV"
   echo "Using current conda env"
-#   pip install -r requirements.txt
-  echo "Requirements installed"
 else
   # Create virtual environment if not exists
   if [ ! -d ".venv" ]; then
