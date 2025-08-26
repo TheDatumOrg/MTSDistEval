@@ -168,7 +168,7 @@ python clustering_scripts/generate_plots_clustering.py
 
 > **Note**: Since clustering results are influenced by randomness, we run experiments 10 times and report the average to mitigate variance; however, slight deviations from the results reported in the original paper are expected.
 
-### 4. Running an individual clustering experiment.
+### 5. Running an individual clustering experiment.
 
 We provide an example of performing clustering experiments by running [src/Clustering/Clustering_pipeline.py](src/Clustering/Clustering_pipeline.py) script, with the following arguments:
 
@@ -184,7 +184,7 @@ Example: Run clustering with PAM + DTW-D on the BasicMotions dataset with Nonorm
 python ./src/Clustering/Clustering_pipeline.py -p $DATASET_DIR$ -f BasicMotions -a PAM_DTW_D -i 1 -s ./Clustering_results
 ```
 
-### 5. Running an individual anomaly detection experiment.
+### 6. Running an individual anomaly detection experiment.
 
 We provide an example of performing anomaly detection experiments by running [src/Anomaly_Detection/AD_pipeline.py](src/Anomaly_Detection/AD_pipeline.py) script, with the following arguments:
 
