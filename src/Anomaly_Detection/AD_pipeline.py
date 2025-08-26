@@ -8,6 +8,12 @@ import torch
 import random
 import time
 import numpy as np
+
+import warnings
+from sklearn.exceptions import UndefinedMetricWarning
+
+warnings.filterwarnings("ignore", category=UndefinedMetricWarning)
+
 # seeding
 seed = 2024
 np.random.seed(seed)
@@ -30,6 +36,7 @@ if __name__ == '__main__':
     parser.add_argument('-m','--method', required=False, default='largest')
     parser.add_argument('-n','--normalize', required=False, default=False)
     parser.add_argument('-j','--n_jobs', required=False, default=-1)
+    parser.add_argument('-t','--testrun', action="store_true", help="Run in test mode if this flag is set")
     arguments = parser.parse_args()
     PATH = arguments.path
     folder = arguments.folder
@@ -42,6 +49,7 @@ if __name__ == '__main__':
     method = arguments.method
     normalize = arguments.normalize
     n_jobs = int(arguments.n_jobs)
+    testrun = arguments.testrun
     print(f'folder: {folder}, distance: {distance_measure}, normalize: {normalize}', flush=True)
     # Specify Anomaly Detector to use and data directory
     AD_Name = 'KNN_multivariate_sliding'
@@ -50,6 +58,11 @@ if __name__ == '__main__':
     df = pd.read_csv(data_direc).dropna()
     data = df.iloc[:, 0:-1].values.astype(float)
     label = df['Label'].astype(int).to_numpy()
+
+    if testrun: # use dummy dataset
+        data = np.random.randn(100, 2)
+        label = np.random.randint(0, 2, size=(100,))
+
     s_time = time.time()
 
     if slidingWindowStrategy == "auto":
