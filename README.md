@@ -152,6 +152,22 @@ Example 2: Run inference with DTW-D distance on the BasicMotions dataset with z-
 python -m src.classification -mp inference -d $DATASET_DIR$ -p BasicMotions -m dtw-d -n zscore-i -c sakoe_chiba_radius=0.1
 ```
 
+### 4. Replicating the Clustering Results:
+
+To replicate the clustering results from our paper:
+
+1. Run all clustering experiments:
+```shell
+bash clustering_scripts/run_clustering_exp.sh \$PATH(UEA_downsampled)\$
+```
+
+2. Generate all clustering tables from the paper:
+```shell
+python clustering_scripts/generate_plots_clustering.py
+```
+
+> **Note**: Since clustering results are influenced by randomness, we run experiments 10 times and report the average to mitigate variance; however, slight deviations from the results reported in the original paper are expected.
+
 ### 4. Running an individual clustering experiment.
 
 We provide an example of performing clustering experiments by running [src/Clustering/Clustering_pipeline.py](src/Clustering/Clustering_pipeline.py) script, with the following arguments:
