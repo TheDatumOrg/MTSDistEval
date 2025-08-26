@@ -158,7 +158,7 @@ To replicate the clustering results from our paper:
 
 1. Run all clustering experiments:
 ```shell
-bash clustering_scripts/run_clustering_exp.sh \$PATH(UEA_downsampled)\$
+bash clustering_scripts/run_clustering_exp.sh $PATH(UEA_downsampled)$
 ```
 
 2. Generate all clustering tables from the paper:
