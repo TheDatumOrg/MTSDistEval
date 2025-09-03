@@ -2,11 +2,18 @@
 set -euo pipefail
 
 DATASET_PATH=$1
+OUTPUT_PATH=$2
 
 # Ask for dataset path if not given
 if [ -z "$DATASET_PATH" ]; then
   read -p "Enter dataset path: " DATASET_PATH
 fi
+
+# Ask for output path if not given
+if [ -z "$OUTPUT_PATH" ]; then
+  read -p "Enter output path: " OUTPUT_PATH
+fi
+
 
 # Create virtual environment if not exists
 if [ ! -d ".venv" ]; then
@@ -56,12 +63,11 @@ FOLDERS=(
 )
 
 # Run experiments: each algo × dataset × 10 runs
-for folder in "${FOLDERS[@]}"; do
-  for algo in "${ALGOS[@]}"; do
-    for i in $(seq 1 10); do
-      SAVE_PATH="src/Clustering/Clustering_results"
+for i in $(seq 1 10); do
+  for folder in "${FOLDERS[@]}"; do
+    for algo in "${ALGOS[@]}"; do
       echo "[RUN] $algo | $folder | experiment-$i"
-      python src/Clustering/Clustering_pipeline.py -p "$DATASET_PATH" -f "$folder" -a "$algo" -i "$i" -s "$SAVE_PATH"
+      python src/Clustering/Clustering_pipeline.py -p "$DATASET_PATH" -f "$folder" -a "$algo" -i "$i" -s "$OUTPUT_PATH"
     done
   done
 done

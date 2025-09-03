@@ -20,17 +20,26 @@ if __name__ == "__main__":
     parser.add_argument('-a', '--algo', required=False, default='PAM_DTW_D')
     parser.add_argument('-i', '--itr', required=False, default=1)
     parser.add_argument('-s','--save_path', required=True)
+    parser.add_argument('-t','--testrun', action="store_true", help="Run in test mode if this flag is set")
     arguments = parser.parse_args()
     PATH = arguments.path
     folder = arguments.folder
     algo = arguments.algo
     itr = int(arguments.itr)
     save_path = arguments.save_path
+    testrun = arguments.testrun
 
-    X_train  = np.load(os.path.join(PATH, folder, f'{folder}_train_X.npy'))
-    X_test  = np.load(os.path.join(PATH, folder, f'{folder}_test_X.npy'))
-    Y_train  = np.load(os.path.join(PATH, folder, f'{folder}_train_Y.npy'))
-    Y_test  = np.load(os.path.join(PATH, folder, f'{folder}_test_Y.npy'))
+    if testrun: # Generate dummy data
+          print("Running in test mode with random data.")
+          X_train = np.random.randn(10,3,32)
+          Y_train = np.random.randint(0, 2, size=(10,))
+          X_test = np.random.randn(10,3,32)
+          Y_test = np.random.randint(0, 2, size=(10,))
+    else:
+      X_train  = np.load(os.path.join(PATH, folder, f'{folder}_train_X.npy'))
+      X_test  = np.load(os.path.join(PATH, folder, f'{folder}_test_X.npy'))
+      Y_train  = np.load(os.path.join(PATH, folder, f'{folder}_train_Y.npy'))
+      Y_test  = np.load(os.path.join(PATH, folder, f'{folder}_test_Y.npy'))
     
     label_encode = LabelEncoder()
     Y_train_norm = label_encode.fit_transform(Y_train)
@@ -40,8 +49,10 @@ if __name__ == "__main__":
     labels = np.append(Y_train_norm, Y_test_norm)
 
     num_clusters = len(set(labels))
- 
-    if algo == "PAM_DTW_D":
+
+    if testrun: # Generate random distances
+       dist_mat = np.abs(np.random.rand(len(ts), len(ts)))
+    elif algo == "PAM_DTW_D":
       dist_mat = dtw_all(ts, ts, mode='dependent', sakoe_chiba_radius=None, itakura_max_slope=None)
     elif algo == "PAM_DTW_I":
       dist_mat = dtw_all(ts, ts, mode='independent', sakoe_chiba_radius=None, itakura_max_slope=None)

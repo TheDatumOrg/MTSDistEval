@@ -15,14 +15,11 @@ if __name__ == "__main__":
 
     OUTDIR = args.output
 
-    # print("Generating the classification plots")
-    # cls_plots(input_path=args.cls_results, output_dir=os.path.join(OUTDIR, "classification"))
-    # print("\n")
+    print("Generating the classification plots")
+    cls_plots(input_path=args.cls_results, output_dir=os.path.join(OUTDIR, "classification"))
 
-    # print("Generating the clustering plots")
-    # clu_plots(input_dir=args.clu_results, output_dir=os.path.join(OUTDIR, "clustering"))
-    # print("\n")
+    print("Generating the clustering plots")
+    clu_plots(input_dir=args.clu_results, output_dir=os.path.join(OUTDIR, "clustering"))
 
     print("Generating the anomaly detection plots")
     ad_plots(input_dir=args.ad_results, output_dir=os.path.join(OUTDIR, "anomaly_detection"))
-    print("\n")

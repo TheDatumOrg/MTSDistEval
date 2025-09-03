@@ -91,7 +91,7 @@ def type_analysis(results, reference_dict, ref_name:tuple = ('ref, refnorm'), al
             diff_p = wilcoxon(g.acc, g.ref, alternative='two-sided')[1]
             return pd.Series([greater, less, diff_p], index=['greater', 'less', 'diff_p'])
         except ValueError:
-            return 1
+            return pd.Series([0, 0, 0], index=['greater', 'less', 'diff_p'])
     
     # Add reference to the lockstep table
     results['ref'] = results.problem.map(reference_dict)
@@ -135,7 +135,7 @@ def sliding(df):
     filtered_stats['metric'] = pd.Categorical(filtered_stats['metric'], categories=custom_order, ordered=True)
     filtered_stats = filtered_stats.sort_values('metric')
     # Create table
-    print("Table 1: Pairwise comparison of Lock-step and Sliding measures - Clustering")
+    print("Table 9. Pairwise comparison of lock-step and sliding measures with Euclidean and elastic measures with SBD-D on the task of clustering on the UEA archive (Nonorm). See Table 3 for column descriptions.")
     print(filtered_stats)
     print("\n\n")
 # OK

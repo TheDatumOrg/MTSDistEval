@@ -23,14 +23,14 @@ CLS_OUTPUT=./output/classification
 CLU_OUTPUT=./output/clustering
 AD_OUTPUT=./output/anomaly_detection
 
-# echo "Running classification experiments"
-# bash scripts/classification/run_classification_exp.sh $UEA_PATH $CLS_OUTPUT
+echo "Running classification experiments"
+bash scripts/classification/run_classification_exp.sh $UEA_PATH $CLS_OUTPUT
 
-# echo "Running clustering experiments"
-# bash scripts/clustering/run_clustering_exp.sh $UEA_PATH $CLU_OUTPUT
+echo "Running clustering experiments"
+bash scripts/clustering/run_clustering_exp.sh $UEA_PATH $CLU_OUTPUT
 
-# echo "Running anomaly detection experiments"
-# bash scripts/anomaly_detection/run_anomaly_exp.sh $TSB_PATH $AD_OUTPUT
+echo "Running anomaly detection experiments"
+bash scripts/anomaly_detection/run_anomaly_exp.sh $TSB_PATH $AD_OUTPUT
 
 
 # ----------------- GENERATING PLOTS ------------------------
