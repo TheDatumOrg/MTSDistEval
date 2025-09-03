@@ -105,21 +105,19 @@ print("DTW-Independent Distance: ", result_dtw_indep)
 print("DTW-Dependent Distance: ", result_dtw_dep)
 ```
 
-### 2. Replicating the Results:
+### 2. Replicating the Results and Plots from the Paper:
 
-To replicate the results from our paper:
-
-1. Run all experiments:
+To replicate the results from our paper, and generate all plots run:
 ```shell
-bash scripts/run_classification_exp.sh
+bash scripts/reproduce.sh
 ```
+This script will:
+1. Run all experiments for classification, clustering, and anomaly detection.
+2. Generate all tables and plots from the paper.
 
-2. Generate all tables and plots from the paper:
-```shell
-python generate_plots.py
-```
+> **Note 1**: This is a large-scale evaluation study. The classification experiments alone include over 18,000 runs, with individual runs taking anywhere from a few seconds to several hours. While the original evaluation was performed on a high-performance cluster with 100+ nodes running in parallel, the provided script runs experiments sequentially to accommodate users without access to such hardware resources.
 
-> **Note**: This is a large-scale evaluation study. The classification experiments alone include over 18,000 runs, with individual runs taking anywhere from a few seconds to several hours. While the original evaluation was performed on a high-performance cluster with 100+ nodes running in parallel, the provided script runs experiments sequentially to accommodate users without access to such hardware resources.
+> **Note 2**: Since clustering results are influenced by randomness, we run experiments 10 times and report the average to mitigate variance; however, slight deviations from the results reported in the original paper are expected.
 
 **Hardware Specifications of the HPC Cluster used to run the experiments:**
 - Node Count: 525
@@ -128,6 +126,24 @@ python generate_plots.py
 
 By requesting 16 cores per job, this allowed us to run a maximum of 4200 jobs (i.e., one measure-dataset-normalization combination) concurrently.
 
+---
+
+In order to run only the classification experiments, call
+```shell
+bash scripts/classification/run_classification_exp.sh $UEA_PATH $CLS_OUTPUT
+```
+with `$UEA_PATH` set to the path of the UEA-archive and `$CLS_OUTPUT` set to the desired output directory for the classification results.
+
+Similarly, to run the clustering experiments, call
+```shell
+bash scripts/clustering/run_clustering_exp.sh $UEA_PATH $CLU_OUTPUT
+```
+
+Lastly, to run the anomaly detection experiments, call
+```shell
+bash scripts/anomaly_detection/run_anomaly_exp.sh $TSB_PATH $AD_OUTPUT
+```
+with `$TSB_PATH` set to the path of the TSB-AD-M dataset and `$AD_OUTPUT` set to the desired output directory for the anomaly detection results.
 
 ### 3. Running an individual classification experiment.
 
@@ -151,24 +167,7 @@ Example 2: Run inference with DTW-D distance on the BasicMotions dataset with z-
 ```shell
 python -m src.classification -mp inference -d $DATASET_DIR$ -p BasicMotions -m dtw-d -n zscore-i -c sakoe_chiba_radius=0.1
 ```
-
-### 4. Replicating the Clustering Results:
-
-To replicate the clustering results from our paper:
-
-1. Run all clustering experiments:
-```shell
-bash clustering_scripts/run_clustering_exp.sh $PATH(UEA_downsampled)$
-```
-
-2. Generate all clustering tables from the paper:
-```shell
-python clustering_scripts/generate_plots_clustering.py
-```
-
-> **Note**: Since clustering results are influenced by randomness, we run experiments 10 times and report the average to mitigate variance; however, slight deviations from the results reported in the original paper are expected.
-
-### 5. Running an individual clustering experiment.
+### 4. Running an individual clustering experiment.
 
 We provide an example of performing clustering experiments by running [src/Clustering/Clustering_pipeline.py](src/Clustering/Clustering_pipeline.py) script, with the following arguments:
 
@@ -184,7 +183,7 @@ Example: Run clustering with PAM + DTW-D on the BasicMotions dataset with Nonorm
 python ./src/Clustering/Clustering_pipeline.py -p $DATASET_DIR$ -f BasicMotions -a PAM_DTW_D -i 1 -s ./Clustering_results
 ```
 
-### 6. Running an individual anomaly detection experiment.
+### 5. Running an individual anomaly detection experiment.
 
 We provide an example of performing anomaly detection experiments by running [src/Anomaly_Detection/AD_pipeline.py](src/Anomaly_Detection/AD_pipeline.py) script, with the following arguments:
 
