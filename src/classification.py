@@ -48,6 +48,7 @@ def get_optimal_parameters(metric, problem, norm, param_path):
 
 def main(params:Parameters):
     data_path = params.data_path
+    OUTDIR = params.output_path
     metric = params.metric
     problem_idx = params.problem_idx
     problem = params.problem
@@ -61,13 +62,12 @@ def main(params:Parameters):
     testrun = params.testrun
     parameters_given = params.metric_params not in [None, {}, '']
 
-    OUTDIR = None
     if run_type == 'inference':
-        OUTDIR = "inference"
-        outpath = os.path.join(OUTDIR, 'results', 'classification_results.csv')
+        OUTDIR += "/inference"
+        outpath = os.path.join(OUTDIR, 'classification_results.csv')
     else:
-        OUTDIR = "validation"
-        outpath = os.path.join(OUTDIR, 'LOOCV', 'validation_results.csv')
+        OUTDIR += "/validation"
+        outpath = os.path.join(OUTDIR, 'validation_results.csv')
 
     os.makedirs(os.path.dirname(outpath), exist_ok=True)
 

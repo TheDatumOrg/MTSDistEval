@@ -7,6 +7,7 @@ import json
 @dataclass
 class Parameters:
     data_path: str
+    output_path: str
     param_path: str
     metric: str
     problem_idx: int
@@ -31,6 +32,7 @@ class Parameters:
     def parse(args: list):
         parser = argparse.ArgumentParser()
         parser.add_argument("-d", "--data", required=False, default="/UEA_archive/")
+        parser.add_argument("-o", "--output", required=False, default="./output/")
         parser.add_argument("-x", "--problem_idx", required=False, default=0)
         parser.add_argument('-pp','--param_path',required=False,default=None)
         parser.add_argument("-p", "--problem", required=False)
@@ -46,6 +48,7 @@ class Parameters:
         arguments = parser.parse_args(args)
 
         data_path = arguments.data
+        output_path = arguments.output
         param_path = arguments.param_path
         metric = arguments.metric
         problem_idx = arguments.problem_idx
@@ -80,11 +83,12 @@ class Parameters:
                     except ValueError:
                         metric_params[key] = value
 
-        return Parameters(data_path, param_path, metric, problem_idx, problem, norm, itr, save_distances, metric_params, metric_policy, n_jobs, testrun)
+        return Parameters(data_path, output_path, param_path, metric, problem_idx, problem, norm, itr, save_distances, metric_params, metric_policy, n_jobs, testrun)
 
     def to_dict(self):
         return {
             'data_path': self.data_path,
+            'output_path': self.output_path,
             'metric': self.metric,
             'problem_idx': self.problem_idx,
             'problem': self.problem,

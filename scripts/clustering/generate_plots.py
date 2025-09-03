@@ -38,15 +38,11 @@ DATASETS = [
     "FaceDetection"
 ]
 
-OUTDIR = "plots_clustering"
-os.makedirs(OUTDIR, exist_ok=True)
-
-def load() -> pd.DataFrame:
-    Clustering_path = "src/Clustering/Clustering_results"
+def load(input_dir) -> pd.DataFrame:
     df = pd.DataFrame(columns=["archive","measures","problem","RI"])
     # loop over measures
-    for measure in os.listdir(Clustering_path):
-        measure_dir = os.path.join(Clustering_path, measure)
+    for measure in os.listdir(input_dir):
+        measure_dir = os.path.join(input_dir, measure)
         if not os.path.isdir(measure_dir):
             continue
         # loop over experiments (experiment_1, experiment_2, …)
@@ -161,18 +157,32 @@ def elastic(df):
     print("Table 2: Pairwise comparison of Elastic measures - Clustering")
     print(filtered_stats)
     print("\n\n")
-# OK
 
-if __name__ == "__main__":
-    import sys
+def main(input_dir, output_dir):
+    OUTDIR = output_dir
+    os.makedirs(OUTDIR, exist_ok=True)
+
     # Redirect stdout to a file
     original_stdout = sys.stdout
     with open(os.path.join(OUTDIR, 'tables.txt'), 'w') as f:
         sys.stdout = f
         # Load data
-        df = load()
+        df = load(input_dir=input_dir)
         df.rename(columns={"measures": "metric"}, inplace=True)
         df.rename(columns={"RI": "acc"}, inplace=True)
         df['norm'] = 'nonorm'
         sliding(df)
         elastic(df)
+
+    sys.stdout = original_stdout
+
+import argparse
+import sys
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Generate plots for clustering experiments")
+    parser.add_argument("--input", type=str, required=True, help="Path to the input data directory")
+    parser.add_argument("--output", type=str, required=True, help="Path to the output directory")
+    args = parser.parse_args()
+
+    main(args.input, args.output)

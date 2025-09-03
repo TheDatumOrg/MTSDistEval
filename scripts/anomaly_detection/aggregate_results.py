@@ -1,8 +1,9 @@
 import argparse
+import os
 from pathlib import Path
 import pandas as pd
 
-def aggregate_csvs(result_dir: Path, output_dir: Path, output_filename: str = "summary_AD_results.csv"):
+def aggregate_results(result_dir: Path, output_path: Path):
     # Only collect CSVs inside subfolders (not directly in result_dir)
     csv_files = [
         csv for csv in result_dir.rglob("*.csv")
@@ -25,21 +26,17 @@ def aggregate_csvs(result_dir: Path, output_dir: Path, output_filename: str = "s
 
     merged_df = pd.concat(all_dfs, ignore_index=True)
 
-    output_dir.mkdir(parents=True, exist_ok=True)
-    output_path = output_dir / output_filename
+    os.makedirs(output_path, exist_ok=True)
     merged_df.to_csv(output_path, index=False)
     print(f"Aggregated CSV written to: {output_path}")
 
-def main():
+if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Aggregate CSVs from nested experiment folders.")
-    parser.add_argument('-d', '--result_dir', type=str, default='./AD_results', help='Directory containing experiment results')
-    parser.add_argument('-o', '--output_dir', type=str, default='./AD_results', help='Directory to write the summary CSV')
+    parser.add_argument('-d', '--result_dir', type=str, help='Directory containing experiment results')
+    parser.add_argument('-o', '--output_path', type=str, help='Path to write the concatenated CSV')
 
     args = parser.parse_args()
     result_dir = Path(args.result_dir)
-    output_dir = Path(args.output_dir)
+    output_path = Path(args.output_path)
 
-    aggregate_csvs(result_dir=result_dir, output_dir=output_dir)
-
-if __name__ == "__main__":
-    main()
+    aggregate_results(result_dir=result_dir, output_path=output_path)

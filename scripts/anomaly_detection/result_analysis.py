@@ -6,7 +6,8 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from scipy.stats import friedmanchisquare, wilcoxon
 from scikit_posthocs import posthoc_nemenyi_friedman
-from Friedman_Nemenyi_test import graph_ranks
+from scripts.Friedman_Nemenyi_test import graph_ranks
+import sys
 
 
 def friedman_nemenyi(df, treatment, dataset, acc, alpha=.05):
@@ -322,21 +323,14 @@ def cdwrapper(g, alpha=0.1):
     print(type_analysis(g, ref, ref_name=(metric, 'zscore'), alpha=alpha))
     plt.savefig(f'figures/{metric}_cd.pdf')
 
-
-if __name__ == "__main__":
-
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--csv", type=str, required=True, help="Input CSV file (aggregated csv)")
-    args = parser.parse_args()
-
-
+def result_analysis(input_path, output_path):
     # set up params
     metric_name = 'VUS-PR'
     ALPHA=0.1
     NORM_ORDER = ["nonorm"]
 
     # load data
-    data_df = pd.read_csv(args.csv)
+    data_df = pd.read_csv(input_path)
     if 'classifier_name' in data_df.columns:
         data_df = data_df.rename(columns={'classifier_name': 'metric', 
                                           'dataset_name': 'problem', 
@@ -358,4 +352,17 @@ if __name__ == "__main__":
     # analysis
     AD_stats = type_analysis(data_df[data_df.metric!= 'Euclidean'], ed_df, ref_name=('Euclidean', 'nonorm'), alpha=ALPHA)
 
-    print(AD_stats)
+    original_stdout = sys.stdout
+    with open(os.path.join(output_path), 'w') as f:
+        sys.stdout = f
+        print(AD_stats)
+    sys.stdout = original_stdout
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-i", "--input", type=str, required=True, help="Input CSV file (aggregated csv)")
+    parser.add_argument("-o", "--output", type=str, required=True, help="Output path for results")
+
+    args = parser.parse_args()
+
+    result_analysis(args.input, args.output)
