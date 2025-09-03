@@ -4,3 +4,4 @@ inference/
 **results/
 .venv/
 plots/
+output/

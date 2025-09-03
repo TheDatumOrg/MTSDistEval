@@ -142,7 +142,7 @@ def type_analysis(results, reference_dict, ref_name:tuple = ('ref, refnorm'), al
             diff_p = wilcoxon(g.acc, g.ref, alternative='two-sided')[1]
             return pd.Series([greater, less, diff_p], index=['greater', 'less', 'diff_p'])
         except ValueError:
-            return 1
+            return pd.Series([0,0,0], index=['greater', 'less', 'diff_p'])
     
     # Add reference to the lockstep table
     results['ref'] = results.problem.map(reference_dict)
@@ -324,6 +324,8 @@ def cdwrapper(g, alpha=0.1):
     plt.savefig(f'figures/{metric}_cd.pdf')
 
 def result_analysis(input_path, output_path):
+    os.makedirs(output_path, exist_ok=True)
+
     # set up params
     metric_name = 'VUS-PR'
     ALPHA=0.1
@@ -341,11 +343,8 @@ def result_analysis(input_path, output_path):
                                         metric_name: 'acc'})
         
     data_df["metric"] = data_df["metric"].replace("euclidean", "Euclidean")
-    
 
     data_df['norm'] = 'nonorm'
-
-    data_df.head()
 
     ed_df = data_df[data_df.metric == 'Euclidean'].set_index("problem").acc.to_dict()
 
@@ -353,8 +352,9 @@ def result_analysis(input_path, output_path):
     AD_stats = type_analysis(data_df[data_df.metric!= 'Euclidean'], ed_df, ref_name=('Euclidean', 'nonorm'), alpha=ALPHA)
 
     original_stdout = sys.stdout
-    with open(os.path.join(output_path), 'w') as f:
+    with open(os.path.join(output_path, 'tables.txt'), 'w') as f:
         sys.stdout = f
+        print("Table 10: Pairwise comparison of lock-step, sliding, and elastic measures on the TSB-AD-M archive, using a 1NN anomaly detector. See Table 3 for column descriptions.")
         print(AD_stats)
     sys.stdout = original_stdout
 

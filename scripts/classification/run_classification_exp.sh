@@ -34,45 +34,45 @@ NORMS=(zscore-i zscore-d minmax-i minmax-d median-i median-d mean-i mean-d unit-
 
 # Run experiments with optimal parameters on nonorm
 for measure in "${PMEASURES[@]}"; do
-    python -m src.classification -mp inference --testrun -d $DATASET_PATH -o $OUTPUT_PATH -pp $PARAM_PATH -m $measure -p '*' -n none
+    python -m src.classification -mp inference -d $DATASET_PATH -o $OUTPUT_PATH -pp $PARAM_PATH -m $measure -p '*' -n none
 done
 for measure in "${ENSEMBLES[@]}"; do
-    python -m src.classification -mp inference --testrun -d $DATASET_PATH -o $OUTPUT_PATH -pp $PARAM_PATH -m $measure -p '*' -n none
+    python -m src.classification -mp inference -d $DATASET_PATH -o $OUTPUT_PATH -pp $PARAM_PATH -m $measure -p '*' -n none
 done
 
 # Run experiments with unsupervised parameters on all normalizations and datasets
 for norm in "${NORMS[@]}"; do
     # Measures without parameters
     for measure in "${NPMEASURES[@]}"; do
-        python -m src.classification -mp inference --testrun -d $DATASET_PATH -o $OUTPUT_PATH -m $measure -p '*' -n $norm
+        python -m src.classification -mp inference -d $DATASET_PATH -o $OUTPUT_PATH -m $measure -p '*' -n $norm
     done
     # Measures with parameters
-    python -m src.classification -mp inference --testrun -d $DATASET_PATH -o $OUTPUT_PATH -m dtw-d -p '*' -n $norm -c sakoe_chiba_radius=0.1
-    python -m src.classification -mp inference --testrun -d $DATASET_PATH -o $OUTPUT_PATH -m dtw-d -p '*' -n $norm -c sakoe_chiba_radius=1
-    python -m src.classification -mp inference --testrun -d $DATASET_PATH -o $OUTPUT_PATH -m dtw-i -p '*' -n $norm -c sakoe_chiba_radius=0.1
-    python -m src.classification -mp inference --testrun -d $DATASET_PATH -o $OUTPUT_PATH -m dtw-i -p '*' -n $norm -c sakoe_chiba_radius=1
-    python -m src.classification -mp inference --testrun -d $DATASET_PATH -o $OUTPUT_PATH -m erp-d -p '*' -n $norm -c sakoe_chiba_radius=1
-    python -m src.classification -mp inference --testrun -d $DATASET_PATH -o $OUTPUT_PATH -m gak-d -p '*' -n $norm -c sigma=0.1
-    python -m src.classification -mp inference --testrun -d $DATASET_PATH -o $OUTPUT_PATH -m gak-i -p '*' -n $norm -c sigma=0.1
-    python -m src.classification -mp inference --testrun -d $DATASET_PATH -o $OUTPUT_PATH -m kdtw-d -p '*' -n $norm -c sigma=0.125
-    python -m src.classification -mp inference --testrun -d $DATASET_PATH -o $OUTPUT_PATH -m kdtw-i -p '*' -n $norm -c sigma=0.125
-    python -m src.classification -mp inference --testrun -d $DATASET_PATH -o $OUTPUT_PATH -m lcss-d -p '*' -n $norm -c sakoe_chiba_radius=0.05 epsilon=0.2
-    python -m src.classification -mp inference --testrun -d $DATASET_PATH -o $OUTPUT_PATH -m lcss-i -p '*' -n $norm -c sakoe_chiba_radius=0.05 epsilon=0.2
-    python -m src.classification -mp inference --testrun -d $DATASET_PATH -o $OUTPUT_PATH -m msm-d -p '*' -n $norm -c c=0.5
-    python -m src.classification -mp inference --testrun -d $DATASET_PATH -o $OUTPUT_PATH -m msm-i -p '*' -n $norm -c c=0.5
-    python -m src.classification -mp inference --testrun -d $DATASET_PATH -o $OUTPUT_PATH -m rbf -p '*' -n $norm -c gamma=-1
-    python -m src.classification -mp inference --testrun -d $DATASET_PATH -o $OUTPUT_PATH -m sink-d-denom -p '*' -n $norm -c gamma=5
-    python -m src.classification -mp inference --testrun -d $DATASET_PATH -o $OUTPUT_PATH -m sink-i-denom -p '*' -n $norm -c gamma=5
-    python -m src.classification -mp inference --testrun -d $DATASET_PATH -o $OUTPUT_PATH -m twe-d -p '*' -n $norm -c lmbda=1 nu=0.0001
-    python -m src.classification -mp inference --testrun -d $DATASET_PATH -o $OUTPUT_PATH -m twe-i -p '*' -n $norm -c lmbda=1 nu=0.0001
-    python -m src.classification -mp inference --testrun -d $DATASET_PATH -o $OUTPUT_PATH -m tloss-d -p '*' -n $norm -c out_channels=320
-    python -m src.classification -mp inference --testrun -d $DATASET_PATH -o $OUTPUT_PATH -m tloss-i -p '*' -n $norm -c out_channels=320
-    python -m src.classification -mp inference --testrun -d $DATASET_PATH -o $OUTPUT_PATH -m ts2vec-d -p '*' -n $norm -c out_channels=320
-    python -m src.classification -mp inference --testrun -d $DATASET_PATH -o $OUTPUT_PATH -m ts2vec-i -p '*' -n $norm -c out_channels=320
-    python -m src.classification -mp inference --testrun -d $DATASET_PATH -o $OUTPUT_PATH -m pca -p '*' -n $norm -c exvar=.95
-    python -m src.classification -mp inference --testrun -d $DATASET_PATH -o $OUTPUT_PATH -m hmm-rescale-d -p '*' -n $norm -c n_states=2
-    python -m src.classification -mp inference --testrun -d $DATASET_PATH -o $OUTPUT_PATH -m hmm-rescale-i -p '*' -n $norm -c n_states=2
-    python -m src.classification -mp inference --testrun -d $DATASET_PATH -o $OUTPUT_PATH -m grail-d-denom -p '*' -n $norm -c gamma=2
-    python -m src.classification -mp inference --testrun -d $DATASET_PATH -o $OUTPUT_PATH -m grail-i-denom -p '*' -n $norm -c gamma=2
-    python -m src.classification -mp inference --testrun -d $DATASET_PATH -o $OUTPUT_PATH -m erp-i -p '*' -n $norm -c sakoe_chiba_radius=1
+    python -m src.classification -mp inference -d $DATASET_PATH -o $OUTPUT_PATH -m dtw-d -p '*' -n $norm -c sakoe_chiba_radius=0.1
+    python -m src.classification -mp inference -d $DATASET_PATH -o $OUTPUT_PATH -m dtw-d -p '*' -n $norm -c sakoe_chiba_radius=1
+    python -m src.classification -mp inference -d $DATASET_PATH -o $OUTPUT_PATH -m dtw-i -p '*' -n $norm -c sakoe_chiba_radius=0.1
+    python -m src.classification -mp inference -d $DATASET_PATH -o $OUTPUT_PATH -m dtw-i -p '*' -n $norm -c sakoe_chiba_radius=1
+    python -m src.classification -mp inference -d $DATASET_PATH -o $OUTPUT_PATH -m erp-d -p '*' -n $norm -c sakoe_chiba_radius=1
+    python -m src.classification -mp inference -d $DATASET_PATH -o $OUTPUT_PATH -m gak-d -p '*' -n $norm -c sigma=0.1
+    python -m src.classification -mp inference -d $DATASET_PATH -o $OUTPUT_PATH -m gak-i -p '*' -n $norm -c sigma=0.1
+    python -m src.classification -mp inference -d $DATASET_PATH -o $OUTPUT_PATH -m kdtw-d -p '*' -n $norm -c sigma=0.125
+    python -m src.classification -mp inference -d $DATASET_PATH -o $OUTPUT_PATH -m kdtw-i -p '*' -n $norm -c sigma=0.125
+    python -m src.classification -mp inference -d $DATASET_PATH -o $OUTPUT_PATH -m lcss-d -p '*' -n $norm -c sakoe_chiba_radius=0.05 epsilon=0.2
+    python -m src.classification -mp inference -d $DATASET_PATH -o $OUTPUT_PATH -m lcss-i -p '*' -n $norm -c sakoe_chiba_radius=0.05 epsilon=0.2
+    python -m src.classification -mp inference -d $DATASET_PATH -o $OUTPUT_PATH -m msm-d -p '*' -n $norm -c c=0.5
+    python -m src.classification -mp inference -d $DATASET_PATH -o $OUTPUT_PATH -m msm-i -p '*' -n $norm -c c=0.5
+    python -m src.classification -mp inference -d $DATASET_PATH -o $OUTPUT_PATH -m rbf -p '*' -n $norm -c gamma=-1
+    python -m src.classification -mp inference -d $DATASET_PATH -o $OUTPUT_PATH -m sink-d-denom -p '*' -n $norm -c gamma=5
+    python -m src.classification -mp inference -d $DATASET_PATH -o $OUTPUT_PATH -m sink-i-denom -p '*' -n $norm -c gamma=5
+    python -m src.classification -mp inference -d $DATASET_PATH -o $OUTPUT_PATH -m twe-d -p '*' -n $norm -c lmbda=1 nu=0.0001
+    python -m src.classification -mp inference -d $DATASET_PATH -o $OUTPUT_PATH -m twe-i -p '*' -n $norm -c lmbda=1 nu=0.0001
+    python -m src.classification -mp inference -d $DATASET_PATH -o $OUTPUT_PATH -m tloss-d -p '*' -n $norm -c out_channels=320
+    python -m src.classification -mp inference -d $DATASET_PATH -o $OUTPUT_PATH -m tloss-i -p '*' -n $norm -c out_channels=320
+    python -m src.classification -mp inference -d $DATASET_PATH -o $OUTPUT_PATH -m ts2vec-d -p '*' -n $norm -c out_channels=320
+    python -m src.classification -mp inference -d $DATASET_PATH -o $OUTPUT_PATH -m ts2vec-i -p '*' -n $norm -c out_channels=320
+    python -m src.classification -mp inference -d $DATASET_PATH -o $OUTPUT_PATH -m pca -p '*' -n $norm -c exvar=.95
+    python -m src.classification -mp inference -d $DATASET_PATH -o $OUTPUT_PATH -m hmm-rescale-d -p '*' -n $norm -c n_states=2
+    python -m src.classification -mp inference -d $DATASET_PATH -o $OUTPUT_PATH -m hmm-rescale-i -p '*' -n $norm -c n_states=2
+    python -m src.classification -mp inference -d $DATASET_PATH -o $OUTPUT_PATH -m grail-d-denom -p '*' -n $norm -c gamma=2
+    python -m src.classification -mp inference -d $DATASET_PATH -o $OUTPUT_PATH -m grail-i-denom -p '*' -n $norm -c gamma=2
+    python -m src.classification -mp inference -d $DATASET_PATH -o $OUTPUT_PATH -m erp-i -p '*' -n $norm -c sakoe_chiba_radius=1
 done
